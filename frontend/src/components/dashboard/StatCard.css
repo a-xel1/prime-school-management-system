@@ -1,0 +1,32 @@
+.stat-card {
+  min-width: 0;
+  padding: 22px;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.stat-card-title {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.stat-card-value {
+  display: block;
+  margin-top: 12px;
+
+  color: #111827;
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.stat-card-description {
+  margin: 10px 0 0;
+  color: #9ca3af;
+  font-size: 13px;
+  line-height: 1.5;
+}

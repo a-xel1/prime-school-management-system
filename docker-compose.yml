@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres:16
+    container_name: prime_database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: prime_db
+      POSTGRES_USER: prime_user
+      POSTGRES_PASSWORD: prime_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - prime_postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: prime_backend
+    restart: unless-stopped
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8001:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - database
+
+volumes:
+  prime_postgres_data:
