@@ -1,26 +1,25 @@
 import axios from "axios";
 import { useState, type SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../api/axios";
-import { saveTokens } from "../../utils/authStorage";
+import { loginUser } from "../../services/authService";
 import "./Login.css";
-
-type LoginResponse = {
-  access: string;
-  refresh: string;
-};
 
 function LoginPage() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: SyntheticEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
     setErrorMessage("");
@@ -28,26 +27,16 @@ function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await api.post<LoginResponse>(
-        "/api/auth/login/",
-        {
-          email: email.trim(),
-          password,
-        },
-      );
-
-      const { access, refresh } = response.data;
-
-      if (!access || !refresh) {
-        throw new Error(
-          "The server did not return the required authentication tokens.",
-        );
-      }
-
-      saveTokens(access, refresh, rememberMe);
+      await loginUser({
+        email,
+        password,
+        rememberMe,
+      });
 
       setSuccessMessage("Login successful.");
-      navigate("/dashboard", { replace: true });
+      navigate("/dashboard", {
+        replace: true,
+      });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const responseData = error.response?.data as
@@ -87,7 +76,10 @@ function LoginPage() {
           <p>Sign in to continue to your account.</p>
         </header>
 
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
           {errorMessage && (
             <div
               className="form-message form-message-error"
@@ -107,15 +99,18 @@ function LoginPage() {
           )}
 
           <div className="form-group">
-            <label htmlFor="email">Email address</label>
+            <label htmlFor="email">
+              Email address
+            </label>
 
             <input
               id="email"
-              name="email"
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
               autoComplete="email"
               disabled={isLoading}
               required
@@ -123,13 +118,18 @@ function LoginPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              Password
+            </label>
 
             <div className="password-field">
               <input
                 id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Enter your password"
                 value={password}
                 onChange={(event) =>
@@ -144,17 +144,15 @@ function LoginPage() {
                 type="button"
                 className="password-toggle"
                 onClick={() =>
-                  setShowPassword((current) => !current)
+                  setShowPassword(
+                    (current) => !current,
+                  )
                 }
-                aria-label={
-                  showPassword
-                    ? "Hide password"
-                    : "Show password"
-                }
-                aria-pressed={showPassword}
                 disabled={isLoading}
               >
-                {showPassword ? "Hide" : "Show"}
+                {showPassword
+                  ? "Hide"
+                  : "Show"}
               </button>
             </div>
           </div>
@@ -165,7 +163,9 @@ function LoginPage() {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(event) =>
-                  setRememberMe(event.target.checked)
+                  setRememberMe(
+                    event.target.checked,
+                  )
                 }
                 disabled={isLoading}
               />
@@ -174,9 +174,11 @@ function LoginPage() {
             </label>
 
             <button
-              className="forgot-password"
               type="button"
-              onClick={() => navigate("/forgot-password")}
+              className="forgot-password"
+              onClick={() =>
+                navigate("/forgot-password")
+              }
               disabled={isLoading}
             >
               Forgot password?
@@ -188,16 +190,20 @@ function LoginPage() {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Signing in..." : "Sign in"}
+            {isLoading
+              ? "Signing in..."
+              : "Sign in"}
           </button>
         </form>
 
         <p className="register-text">
-          Don&apos;t have an account?{" "}
+          Don't have an account?{" "}
           <button
             className="register-link"
             type="button"
-            onClick={() => navigate("/register")}
+            onClick={() =>
+              navigate("/register")
+            }
             disabled={isLoading}
           >
             Create account

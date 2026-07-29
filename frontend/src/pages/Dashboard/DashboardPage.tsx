@@ -7,11 +7,23 @@ import {
   getCurrentUser,
   type UserProfile,
 } from "../../services/profileService";
-import { clearTokens } from "../../utils/authStorage";
+import {
+  clearAuthStorage,
+  getStoredUser,
+  type UserRole,
+} from "../../utils/authStorage";
 import "./DashboardPage.css";
+
+const roleLabels: Record<UserRole, string> = {
+  admin: "Administrator",
+  teacher: "Teacher",
+  student: "Student",
+  parent: "Parent",
+};
 
 function DashboardPage() {
   const navigate = useNavigate();
+  const storedUser = getStoredUser();
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -28,7 +40,7 @@ function DashboardPage() {
           setUser(profile);
         }
       } catch {
-        clearTokens();
+        clearAuthStorage();
         navigate("/login", { replace: true });
       } finally {
         if (isMounted) {
@@ -54,12 +66,15 @@ function DashboardPage() {
     try {
       await logoutUser();
     } catch {
-      // Clear the local session even if the API request fails.
+      clearAuthStorage();
     } finally {
-      clearTokens();
+      clearAuthStorage();
       navigate("/login", { replace: true });
     }
   }
+
+  const role = user?.role ?? storedUser?.role;
+  const roleLabel = role ? roleLabels[role] : "User";
 
   return (
     <main className="dashboard-page">
@@ -75,6 +90,12 @@ function DashboardPage() {
                   ? `Welcome back, ${user.username}.`
                   : "Welcome to Prime School Management System."}
             </p>
+
+            {!isLoadingProfile && role && (
+              <p>
+                Signed in as: <strong>{roleLabel}</strong>
+              </p>
+            )}
           </div>
 
           <button
@@ -86,34 +107,129 @@ function DashboardPage() {
           </button>
         </header>
 
-        <section
-          className="dashboard-stats"
-          aria-label="School statistics"
-        >
-          <StatCard
-            title="Total Students"
-            value="0"
-            description="Registered students"
-          />
+        {role === "admin" && (
+          <section
+            className="dashboard-stats"
+            aria-label="School statistics"
+          >
+            <StatCard
+              title="Total Students"
+              value="0"
+              description="Registered students"
+            />
 
-          <StatCard
-            title="Total Teachers"
-            value="0"
-            description="Active teaching staff"
-          />
+            <StatCard
+              title="Total Teachers"
+              value="0"
+              description="Active teaching staff"
+            />
 
-          <StatCard
-            title="Classes"
-            value="0"
-            description="Available classes"
-          />
+            <StatCard
+              title="Classes"
+              value="0"
+              description="Available classes"
+            />
 
-          <StatCard
-            title="Outstanding Fees"
-            value="GHS 0.00"
-            description="Pending fee payments"
-          />
-        </section>
+            <StatCard
+              title="Outstanding Fees"
+              value="GHS 0.00"
+              description="Pending fee payments"
+            />
+          </section>
+        )}
+
+        {role === "teacher" && (
+          <section
+            className="dashboard-stats"
+            aria-label="Teacher statistics"
+          >
+            <StatCard
+              title="My Classes"
+              value="0"
+              description="Assigned classes"
+            />
+
+            <StatCard
+              title="My Students"
+              value="0"
+              description="Students under your classes"
+            />
+
+            <StatCard
+              title="Attendance"
+              value="0%"
+              description="Today's attendance"
+            />
+
+            <StatCard
+              title="Assessments"
+              value="0"
+              description="Pending assessments"
+            />
+          </section>
+        )}
+
+        {role === "student" && (
+          <section
+            className="dashboard-stats"
+            aria-label="Student statistics"
+          >
+            <StatCard
+              title="My Class"
+              value="Not assigned"
+              description="Current class"
+            />
+
+            <StatCard
+              title="Attendance"
+              value="0%"
+              description="Your attendance rate"
+            />
+
+            <StatCard
+              title="Assessments"
+              value="0"
+              description="Available assessments"
+            />
+
+            <StatCard
+              title="Outstanding Fees"
+              value="GHS 0.00"
+              description="Pending school fees"
+            />
+          </section>
+        )}
+
+        {role === "parent" && (
+          <section
+            className="dashboard-stats"
+            aria-label="Parent statistics"
+          >
+            <StatCard
+              title="Children"
+              value="0"
+              description="Linked students"
+            />
+
+            <StatCard
+              title="Attendance"
+              value="0%"
+              description="Children's attendance"
+            />
+
+            <StatCard
+              title="Assessments"
+              value="0"
+              description="Recent results"
+            />
+
+            <StatCard
+              title="Outstanding Fees"
+              value="GHS 0.00"
+              description="Pending fee payments"
+            />
+          </section>
+        )}
       </section>
     </main>
   );

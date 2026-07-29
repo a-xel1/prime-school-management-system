@@ -1,5 +1,15 @@
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
+const USER_KEY = "authUser";
+
+export type UserRole = "admin" | "teacher" | "student" | "parent";
+
+export type AuthUser = {
+  id: number;
+  username: string;
+  email: string;
+  role: UserRole;
+};
 
 export function getAccessToken(): string | null {
   return (
@@ -15,6 +25,38 @@ export function getRefreshToken(): string | null {
   );
 }
 
+export function getStoredUser(): AuthUser | null {
+  const storedUser =
+    localStorage.getItem(USER_KEY) ??
+    sessionStorage.getItem(USER_KEY);
+
+  if (!storedUser) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(storedUser) as AuthUser;
+  } catch {
+    clearAuthStorage();
+    return null;
+  }
+}
+
+export function saveAuthData(
+  accessToken: string,
+  refreshToken: string,
+  user: AuthUser,
+  rememberMe: boolean,
+): void {
+  clearAuthStorage();
+
+  const storage = rememberMe ? localStorage : sessionStorage;
+
+  storage.setItem(ACCESS_TOKEN_KEY, accessToken);
+  storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+  storage.setItem(USER_KEY, JSON.stringify(user));
+}
+
 export function saveTokens(
   accessToken: string,
   refreshToken: string,
@@ -26,6 +68,18 @@ export function saveTokens(
 
   storage.setItem(ACCESS_TOKEN_KEY, accessToken);
   storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+}
+
+export function saveUser(
+  user: AuthUser,
+  rememberMe: boolean,
+): void {
+  const storage = rememberMe ? localStorage : sessionStorage;
+
+  localStorage.removeItem(USER_KEY);
+  sessionStorage.removeItem(USER_KEY);
+
+  storage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 export function saveAccessToken(accessToken: string): void {
@@ -53,4 +107,11 @@ export function clearTokens(): void {
 
   sessionStorage.removeItem(ACCESS_TOKEN_KEY);
   sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+}
+
+export function clearAuthStorage(): void {
+  clearTokens();
+
+  localStorage.removeItem(USER_KEY);
+  sessionStorage.removeItem(USER_KEY);
 }
