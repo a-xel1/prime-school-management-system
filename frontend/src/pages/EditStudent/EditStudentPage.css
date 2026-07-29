@@ -1,0 +1,284 @@
+.edit-student-page {
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.edit-student-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.edit-student-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 24px;
+  padding: 28px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.edit-student-header h1 {
+  margin: 4px 0 8px;
+  color: #111827;
+  font-size: 32px;
+}
+
+.edit-student-header p {
+  margin: 0;
+  color: #667085;
+}
+
+.edit-student-eyebrow {
+  color: #2563eb !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.edit-student-back-button {
+  min-height: 42px;
+  padding: 0 16px;
+
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #344054;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-student-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.edit-student-section {
+  padding: 28px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.edit-student-section-heading {
+  margin-bottom: 24px;
+}
+
+.edit-student-section-heading h2 {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.edit-student-section-heading p {
+  margin: 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+.edit-student-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.edit-student-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-student-field-full {
+  grid-column: 1 / -1;
+}
+
+.edit-student-field label {
+  color: #344054;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.edit-student-field input,
+.edit-student-field select,
+.edit-student-field textarea {
+  width: 100%;
+
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+
+  font: inherit;
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.edit-student-field input,
+.edit-student-field select {
+  min-height: 44px;
+  padding: 0 13px;
+}
+
+.edit-student-field textarea {
+  padding: 12px 13px;
+  resize: vertical;
+}
+
+.edit-student-field input:focus,
+.edit-student-field select:focus,
+.edit-student-field textarea:focus {
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgb(37 99 235 / 12%);
+}
+
+.edit-student-field input:disabled,
+.edit-student-field select:disabled,
+.edit-student-field textarea:disabled {
+  background: #f9fafb;
+  cursor: not-allowed;
+}
+
+.edit-student-error {
+  padding: 14px 16px;
+
+  border: 1px solid #fecdca;
+  border-radius: 10px;
+  background: #fef3f2;
+  color: #b42318;
+
+  font-size: 14px;
+}
+
+.edit-student-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  padding: 20px 24px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.edit-student-actions button {
+  min-height: 44px;
+  padding: 0 18px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-student-cancel-button {
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+}
+
+.edit-student-submit-button {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.edit-student-submit-button:hover {
+  background: #1d4ed8;
+}
+
+.edit-student-actions button:disabled,
+.edit-student-back-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.edit-student-message {
+  width: min(600px, 100%);
+  margin: 80px auto;
+  padding: 32px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+
+  color: #667085;
+  text-align: center;
+}
+
+.edit-student-message h1 {
+  margin: 0 0 10px;
+  color: #111827;
+  font-size: 24px;
+}
+
+.edit-student-message p {
+  margin: 0 0 20px;
+}
+
+.edit-student-message button {
+  min-height: 42px;
+  padding: 0 16px;
+
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-student-load-error {
+  border-color: #fecdca;
+  background: #fef3f2;
+}
+
+@media (max-width: 700px) {
+  .edit-student-page {
+    padding: 16px;
+  }
+
+  .edit-student-header {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .edit-student-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-student-field-full {
+    grid-column: auto;
+  }
+
+  .edit-student-section {
+    padding: 20px;
+  }
+
+  .edit-student-actions {
+    flex-direction: column-reverse;
+  }
+
+  .edit-student-actions button {
+    width: 100%;
+  }
+}

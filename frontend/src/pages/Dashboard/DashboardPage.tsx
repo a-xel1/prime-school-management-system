@@ -8,6 +8,10 @@ import {
   type UserProfile,
 } from "../../services/profileService";
 import {
+  getStudentStats,
+  type StudentStats,
+} from "../../services/studentService";
+import {
   clearAuthStorage,
   getStoredUser,
   type UserRole,
@@ -25,19 +29,60 @@ function DashboardPage() {
   const navigate = useNavigate();
   const storedUser = getStoredUser();
 
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [user, setUser] =
+    useState<UserProfile | null>(null);
+
+  const [studentStats, setStudentStats] =
+    useState<StudentStats | null>(null);
+
+  const [isLoadingProfile, setIsLoadingProfile] =
+    useState(true);
+
+  const [
+    isLoadingStudentStats,
+    setIsLoadingStudentStats,
+  ] = useState(false);
+
+  const [studentStatsError, setStudentStatsError] =
+    useState("");
+
+  const [isLoggingOut, setIsLoggingOut] =
+    useState(false);
 
   useEffect(() => {
     let isMounted = true;
 
-    async function loadProfile() {
+    async function loadDashboardData() {
       try {
         const profile = await getCurrentUser();
 
-        if (isMounted) {
-          setUser(profile);
+        if (!isMounted) {
+          return;
+        }
+
+        setUser(profile);
+
+        if (profile.role === "admin") {
+          setIsLoadingStudentStats(true);
+          setStudentStatsError("");
+
+          try {
+            const stats = await getStudentStats();
+
+            if (isMounted) {
+              setStudentStats(stats);
+            }
+          } catch {
+            if (isMounted) {
+              setStudentStatsError(
+                "Unable to load student statistics.",
+              );
+            }
+          } finally {
+            if (isMounted) {
+              setIsLoadingStudentStats(false);
+            }
+          }
         }
       } catch {
         clearAuthStorage();
@@ -49,7 +94,7 @@ function DashboardPage() {
       }
     }
 
-    void loadProfile();
+    void loadDashboardData();
 
     return () => {
       isMounted = false;
@@ -66,7 +111,7 @@ function DashboardPage() {
     try {
       await logoutUser();
     } catch {
-      clearAuthStorage();
+      // The local session is still cleared below.
     } finally {
       clearAuthStorage();
       navigate("/login", { replace: true });
@@ -74,7 +119,22 @@ function DashboardPage() {
   }
 
   const role = user?.role ?? storedUser?.role;
-  const roleLabel = role ? roleLabels[role] : "User";
+
+  const roleLabel = role
+    ? roleLabels[role]
+    : "User";
+
+  const totalStudentsValue = isLoadingStudentStats
+    ? "..."
+    : studentStats
+      ? String(studentStats.total)
+      : "—";
+
+  const studentDescription = studentStatsError
+    ? studentStatsError
+    : studentStats
+      ? `${studentStats.active} active students`
+      : "Registered students";
 
   return (
     <main className="dashboard-page">
@@ -93,7 +153,8 @@ function DashboardPage() {
 
             {!isLoadingProfile && role && (
               <p>
-                Signed in as: <strong>{roleLabel}</strong>
+                Signed in as:{" "}
+                <strong>{roleLabel}</strong>
               </p>
             )}
           </div>
@@ -103,7 +164,9 @@ function DashboardPage() {
             onClick={handleLogout}
             disabled={isLoggingOut}
           >
-            {isLoggingOut ? "Logging out..." : "Logout"}
+            {isLoggingOut
+              ? "Logging out..."
+              : "Logout"}
           </button>
         </header>
 
@@ -114,8 +177,8 @@ function DashboardPage() {
           >
             <StatCard
               title="Total Students"
-              value="0"
-              description="Registered students"
+              value={totalStudentsValue}
+              description={studentDescription}
             />
 
             <StatCard
