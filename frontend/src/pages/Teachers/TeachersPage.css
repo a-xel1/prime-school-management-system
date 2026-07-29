@@ -1,0 +1,463 @@
+.teachers-page {
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.teachers-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.teachers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 24px;
+  padding: 28px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.teachers-header h1 {
+  margin: 4px 0 8px;
+  color: #111827;
+  font-size: 32px;
+}
+
+.teachers-header p {
+  margin: 0;
+  color: #667085;
+}
+
+.teachers-eyebrow {
+  color: #2563eb !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.teachers-header button {
+  min-height: 44px;
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.teachers-header button:hover {
+  background: #1d4ed8;
+}
+
+.teachers-panel {
+  overflow: hidden;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.teachers-toolbar {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.teachers-toolbar input,
+.teachers-toolbar select {
+  min-height: 42px;
+
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+
+  font: inherit;
+}
+
+.teachers-toolbar input {
+  width: min(440px, 100%);
+  padding: 0 14px;
+}
+
+.teachers-toolbar select {
+  padding: 0 36px 0 12px;
+}
+
+.teachers-message {
+  margin: 0;
+  padding: 32px 20px;
+  color: #667085;
+  text-align: center;
+}
+
+.teachers-error {
+  color: #b42318;
+}
+
+.teachers-empty-state {
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.teachers-empty-state h2 {
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.teachers-empty-state p {
+  margin: 0;
+  color: #667085;
+}
+
+.teachers-table-wrapper {
+  overflow-x: auto;
+}
+
+.teachers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.teachers-table th,
+.teachers-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #eaecf0;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.teachers-table th {
+  background: #f9fafb;
+  color: #667085;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.teachers-table td {
+  color: #344054;
+  font-size: 14px;
+}
+
+.teacher-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.teacher-avatar {
+  display: grid;
+  place-items: center;
+
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: #4338ca;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.teacher-name-cell > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.teacher-name-cell strong {
+  color: #111827;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.teacher-name-cell span:last-child {
+  color: #667085;
+  font-size: 12px;
+}
+
+.teacher-employment-type {
+  white-space: nowrap;
+}
+
+.teacher-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 76px;
+  min-height: 28px;
+  padding: 0 12px;
+
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.teacher-status-active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.teacher-status-inactive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.teacher-status-on_leave {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.teacher-status-terminated {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.teacher-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.teacher-actions button {
+  padding: 7px 12px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.teacher-actions button:hover:not(:disabled) {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.teacher-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.teacher-actions .teacher-delete-button {
+  border-color: #fda29b;
+  color: #b42318;
+}
+
+.teacher-actions .teacher-delete-button:hover {
+  border-color: #d92d20;
+  background: #fef3f2;
+}
+
+.teachers-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 20px;
+  border-top: 1px solid #eaecf0;
+}
+
+.teachers-pagination p {
+  margin: 0;
+  color: #667085;
+  font-size: 13px;
+}
+
+.teachers-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.teachers-pagination-controls span {
+  color: #344054;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.teachers-pagination-controls button {
+  min-height: 36px;
+  padding: 0 12px;
+
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #344054;
+
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.teachers-pagination-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.teacher-delete-overlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+  padding: 20px;
+
+  background: rgb(17 24 39 / 55%);
+  backdrop-filter: blur(3px);
+}
+
+.teacher-delete-dialog {
+  width: min(460px, 100%);
+  padding: 28px;
+
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 24px 48px rgb(15 23 42 / 20%);
+}
+
+.teacher-delete-icon {
+  display: grid;
+  place-items: center;
+
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+
+  border-radius: 50%;
+  background: #fee4e2;
+  color: #d92d20;
+
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.teacher-delete-dialog h2 {
+  margin: 0 0 10px;
+  color: #111827;
+  font-size: 22px;
+}
+
+.teacher-delete-dialog p {
+  margin: 0;
+  color: #667085;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.teacher-delete-error {
+  margin-top: 18px;
+  padding: 12px 14px;
+
+  border: 1px solid #fecdca;
+  border-radius: 10px;
+  background: #fef3f2;
+  color: #b42318;
+
+  font-size: 13px;
+}
+
+.teacher-delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.teacher-delete-actions button {
+  min-height: 42px;
+  padding: 0 16px;
+
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.teacher-delete-cancel {
+  border: 1px solid #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+}
+
+.teacher-delete-confirm {
+  border: 1px solid #d92d20;
+  background: #d92d20;
+  color: #ffffff;
+}
+
+.teacher-delete-confirm:hover {
+  background: #b42318;
+}
+
+.teacher-delete-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 800px) {
+  .teachers-page {
+    padding: 16px;
+  }
+
+  .teachers-header {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .teachers-header button {
+    width: 100%;
+  }
+
+  .teachers-toolbar {
+    flex-direction: column;
+  }
+
+  .teachers-toolbar input,
+  .teachers-toolbar select {
+    width: 100%;
+  }
+
+  .teachers-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teachers-pagination-controls {
+    justify-content: space-between;
+  }
+
+  .teacher-delete-actions {
+    flex-direction: column-reverse;
+  }
+
+  .teacher-delete-actions button {
+    width: 100%;
+  }
+}

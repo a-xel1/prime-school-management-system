@@ -12,6 +12,10 @@ import {
   type StudentStats,
 } from "../../services/studentService";
 import {
+  getTeacherStats,
+  type TeacherStats,
+} from "../../services/teacherService";
+import {
   clearAuthStorage,
   getStoredUser,
   type UserRole,
@@ -35,6 +39,9 @@ function DashboardPage() {
   const [studentStats, setStudentStats] =
     useState<StudentStats | null>(null);
 
+  const [teacherStats, setTeacherStats] =
+    useState<TeacherStats | null>(null);
+
   const [isLoadingProfile, setIsLoadingProfile] =
     useState(true);
 
@@ -43,7 +50,15 @@ function DashboardPage() {
     setIsLoadingStudentStats,
   ] = useState(false);
 
+  const [
+    isLoadingTeacherStats,
+    setIsLoadingTeacherStats,
+  ] = useState(false);
+
   const [studentStatsError, setStudentStatsError] =
+    useState("");
+
+  const [teacherStatsError, setTeacherStatsError] =
     useState("");
 
   const [isLoggingOut, setIsLoggingOut] =
@@ -64,29 +79,58 @@ function DashboardPage() {
 
         if (profile.role === "admin") {
           setIsLoadingStudentStats(true);
+          setIsLoadingTeacherStats(true);
+
           setStudentStatsError("");
+          setTeacherStatsError("");
 
-          try {
-            const stats = await getStudentStats();
+          const [
+            studentStatsResult,
+            teacherStatsResult,
+          ] = await Promise.allSettled([
+            getStudentStats(),
+            getTeacherStats(),
+          ]);
 
-            if (isMounted) {
-              setStudentStats(stats);
-            }
-          } catch {
-            if (isMounted) {
-              setStudentStatsError(
-                "Unable to load student statistics.",
-              );
-            }
-          } finally {
-            if (isMounted) {
-              setIsLoadingStudentStats(false);
-            }
+          if (!isMounted) {
+            return;
           }
+
+          if (
+            studentStatsResult.status ===
+            "fulfilled"
+          ) {
+            setStudentStats(
+              studentStatsResult.value,
+            );
+          } else {
+            setStudentStatsError(
+              "Unable to load student statistics.",
+            );
+          }
+
+          if (
+            teacherStatsResult.status ===
+            "fulfilled"
+          ) {
+            setTeacherStats(
+              teacherStatsResult.value,
+            );
+          } else {
+            setTeacherStatsError(
+              "Unable to load teacher statistics.",
+            );
+          }
+
+          setIsLoadingStudentStats(false);
+          setIsLoadingTeacherStats(false);
         }
       } catch {
         clearAuthStorage();
-        navigate("/login", { replace: true });
+
+        navigate("/login", {
+          replace: true,
+        });
       } finally {
         if (isMounted) {
           setIsLoadingProfile(false);
@@ -114,7 +158,10 @@ function DashboardPage() {
       // The local session is still cleared below.
     } finally {
       clearAuthStorage();
-      navigate("/login", { replace: true });
+
+      navigate("/login", {
+        replace: true,
+      });
     }
   }
 
@@ -124,17 +171,31 @@ function DashboardPage() {
     ? roleLabels[role]
     : "User";
 
-  const totalStudentsValue = isLoadingStudentStats
-    ? "..."
-    : studentStats
-      ? String(studentStats.total)
-      : "—";
+  const totalStudentsValue =
+    isLoadingStudentStats
+      ? "..."
+      : studentStats
+        ? String(studentStats.total)
+        : "—";
 
   const studentDescription = studentStatsError
     ? studentStatsError
     : studentStats
       ? `${studentStats.active} active students`
       : "Registered students";
+
+  const totalTeachersValue =
+    isLoadingTeacherStats
+      ? "..."
+      : teacherStats
+        ? String(teacherStats.total)
+        : "—";
+
+  const teacherDescription = teacherStatsError
+    ? teacherStatsError
+    : teacherStats
+      ? `${teacherStats.active} active teaching staff`
+      : "Registered teaching staff";
 
   return (
     <main className="dashboard-page">
@@ -183,8 +244,8 @@ function DashboardPage() {
 
             <StatCard
               title="Total Teachers"
-              value="0"
-              description="Active teaching staff"
+              value={totalTeachersValue}
+              description={teacherDescription}
             />
 
             <StatCard
